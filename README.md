@@ -14,3 +14,4 @@ Keypad       Keyboard
 |A|0|B|F|    |Z|X|C|V|
 +-+-+-+-+    +-+-+-+-+
 ```
+To change the palete press `L`
