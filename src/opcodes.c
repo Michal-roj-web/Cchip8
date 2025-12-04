@@ -11,11 +11,11 @@ void OP_00E0(chip8 * c8)
     printf("CLS ");
 }
 
+//JP addr
 void OP_1NNN(chip8 * c8)
 {
     // setting counter to new memory point
     (*c8).PC = (*c8).opcode & 0x0FFF;
-    printf("JP addr ");
 }
 
 void OP_2NNN(chip8 * c8)

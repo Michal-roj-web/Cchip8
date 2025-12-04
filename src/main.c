@@ -6,12 +6,14 @@
 
 #include "chip-8.h"
 #include "platform.h"
+#include "tests.h"
 
 long currentMillis();
 
 int main(int argc, char *argv[])
 {
 
+    tests();
     char * filename;
 
     if(argc < 2)
