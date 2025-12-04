@@ -1,7 +1,7 @@
 # Cchip8
 Cchip8 is a work in progress chip8 emulator written in C.
 ## Controls
-Default keypad is set to keyboard as follows:
+Default keypad is assigned to keyboard as follows:
 ```
 Keypad       Keyboard
 +-+-+-+-+    +-+-+-+-+
@@ -14,4 +14,4 @@ Keypad       Keyboard
 |A|0|B|F|    |Z|X|C|V|
 +-+-+-+-+    +-+-+-+-+
 ```
-To change the palete press `L`
+To change the palette press `L`
