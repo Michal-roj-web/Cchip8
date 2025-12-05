@@ -25,9 +25,9 @@ void OP_2NNN(chip8 * c8)
 
     // setting the stack to the pc
     (*c8).stack[(*c8).SC] = (*c8).PC;
+    //increment the stack pointer
     (*c8).SC++;
 
-    //increment the stack pointer
     (*c8).PC = addr;
 
 }
