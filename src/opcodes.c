@@ -50,7 +50,6 @@ void OP_6XNN(chip8 * c8)
 
     // setting the register Vx to a value of byte
     (*c8).registers[Vx] = byte;
-    printf("LD Vx, byte ");
 }
 
 void OP_7XNN(chip8 * c8)

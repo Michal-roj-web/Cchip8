@@ -11,6 +11,7 @@ void tests()
 
     testflag += test1NNN(&testc8);
     testflag += test2NNNand00EE(&testc8);
+    testflag += test6XNN(&testc8);
 
     //if any test failed
     if (testflag != 0)
@@ -31,7 +32,7 @@ int test1NNN(chip8 * c8)
     for(int i = 0; i<5; i++)
     {
         // set opcode to a value
-        (*c8).opcode = 0x1000 | addr[i];
+        (*c8).opcode = 0x0000 | addr[i];
         
         // execute
         OP_1NNN(c8);
@@ -126,4 +127,36 @@ int test2NNNand00EE(chip8 * c8)
     return 0;
 }
 
+int test6XNN(chip8 * c8)
+{
+    uint16_t val[5] = {0x2A,0x00,0xFF,0x01,0x12};
 
+    // flags
+    int flag = 0;
+
+    for(int i=0; i < 5; i++)
+    {
+        //setting register
+        (*c8).opcode = 0x0200 | val[i];
+
+        //set function
+        OP_6XNN(c8);
+
+        //checking
+        if(c8->registers[2] != val[i])
+        {
+            flag = 1;
+            break;
+        }
+    }
+
+    if(flag == 1)
+    {
+        printf("6XNN does not work as expected!\n");
+        printf("Function given 0x%x set Register to: 0x%x \n", (*c8).opcode & 0x00FF, (*c8).registers[2]);
+        return 1;
+    }
+
+    printf("6XNN works as expected\n");
+    return 0;
+}
