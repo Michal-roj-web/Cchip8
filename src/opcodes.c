@@ -42,6 +42,7 @@ void OP_00EE(chip8 * c8)
 
 }
 
+// LD Vx byte
 void OP_6XNN(chip8 * c8)
 {
     // getting the vars from the opcode
@@ -202,7 +203,6 @@ void OP_8XY6(chip8 * c8)
     (*c8).registers[0xF] = ((*c8).registers[Vx] & 0x1u);
 
     (*c8).registers[Vx] >>= 1;
-
 }
 
 void OP_8XYE(chip8 * c8)
