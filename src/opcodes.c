@@ -145,40 +145,64 @@ void OP_8XY4(chip8 * c8)
 {
     uint8_t Vx = ((*c8).opcode & 0x0F00) >> 8u;
     uint8_t Vy = ((*c8).opcode & 0x00F0) >> 4u;
-
-    (*c8).registers[0xF] = 0;
+    int flag = 0;
 
     if( ((*c8).registers[Vx] + (*c8).registers[Vy]) > 255U)
     {
-        (*c8).registers[0xF] = 1;
+        flag = 1;
     }
 
+    
     (*c8).registers[Vx] = (*c8).registers[Vx] + (*c8).registers[Vy];
+
+
+    if(flag == 0)
+    {
+        (*c8).registers[0xF] = 0;
+    }
+    else
+    {
+        (*c8).registers[0xF] = 1;
+    }
 }
 
 void OP_8XY5(chip8 * c8)
 {
 	uint8_t Vx = ((*c8).opcode & 0x0F00) >> 8u;
     uint8_t Vy = ((*c8).opcode & 0x00F0) >> 4u;
+    uint8_t flag = 0;
 
-	if ((*c8).registers[Vx] > (*c8).registers[Vy])
-	{
-		(*c8).registers[0xF] = 1;
-	}
-	else
-	{
-		(*c8).registers[0xF] = 0;
-	}
+    if((*c8).registers[Vy] > (*c8).registers[Vx])
+    {
+        flag = 1;
+    }
 
-	(*c8).registers[Vx] -= (*c8).registers[Vy];
+    (*c8).registers[Vx] = (*c8).registers[Vx] - (*c8).registers[Vy];
+
+    if(flag == 0)
+    {
+        (*c8).registers[0xF] = 1;
+    }
+    else if(Vy != 0xF)
+    {
+        (*c8).registers[0xF] = 0;
+    }
 }
 
 void OP_8XY7(chip8 * c8)
 {
     uint8_t Vx = ((*c8).opcode & 0x0F00) >> 8u;
     uint8_t Vy = ((*c8).opcode & 0x00F0) >> 4u;
+    uint8_t flag = 0;
 
-    if((*c8).registers[Vy] > (*c8).registers[Vx])
+    if((*c8).registers[Vy] < (*c8).registers[Vx])
+    {
+        flag = 1;
+    }
+
+    (*c8).registers[Vx] = (*c8).registers[Vy] - (*c8).registers[Vx];
+
+    if(flag == 0)
     {
         (*c8).registers[0xF] = 1;
     }
@@ -186,8 +210,6 @@ void OP_8XY7(chip8 * c8)
     {
         (*c8).registers[0xF] = 0;
     }
-
-    (*c8).registers[Vx] = (*c8).registers[Vy] - (*c8).registers[Vx];
 }
 
 void OP_8XY6(chip8 * c8)
@@ -320,12 +342,12 @@ void OP_FX1E(chip8 * c8) // new
     uint8_t Vx = ((*c8).opcode & 0x0F00u) >> 8u;
     uint16_t sum = (*c8).index + (*c8).registers[Vx];
 
+    (*c8).index = ((*c8).index + (*c8).registers[Vx]) & 0x0FFF;
+    
     if(sum < 0x0FFF)
     {
         (*c8).registers[0xF] = 1u;
     }
-
-    (*c8).index = ((*c8).index + (*c8).registers[Vx]) & 0x0FFF;
 }
 
 void OP_FX0A(chip8 * c8) // new

@@ -13,6 +13,7 @@ void tests()
     testflag += test2NNNand00EE(&testc8);
     testflag += test6XNN(&testc8);
     testflag += test3XNN(&testc8);
+    testflag += test8XY7(&testc8);
 
     //if any test failed
     if (testflag != 0)
@@ -20,6 +21,48 @@ void tests()
         exit(0);
     }
 }
+
+int test8XY7(chip8 * c8)
+{
+    int errorflag = 0;
+    // tests with no carry
+    printf("Happy:\n");
+
+    // Check that vF = vX - vF results in no carry
+    (*c8).registers[0xF] = 10;
+    (*c8).registers[0x2] = 15;
+    (*c8).opcode = 0x8F27;
+    OP_8XY7(c8);
+
+    // Print the results
+    if((*c8).registers[0xF] != 1) errorflag++;
+    printf("1.vF = vX - vF, vF:%i\n", (*c8).registers[0xF]);
+
+    // Check that vX = vF - vX results in the correct result and no carry
+    (*c8).registers[0xF] = 20;
+    (*c8).registers[0x3] = 15;
+    (*c8).opcode = 0x83F7;
+    OP_8XY7(c8);
+
+    // Print the result
+    if((*c8).registers[0x3] != 5) errorflag++;
+    printf("2.vX = vF - vX, vX:%i\n", (*c8).registers[0x3]);
+
+    // Check that N - N (for the same N) does not result in carry
+    (*c8).registers[0xF] = 10;
+    (*c8).registers[0x5] = 10;
+    (*c8).opcode = 0x85F7;
+    OP_8XY7(c8);
+
+    if((*c8).registers[0xF] != 1) errorflag++;
+    printf("1.vX = N - N, vF:%i\n", (*c8).registers[0xF]);
+
+    if(errorflag != 0) return 1;
+    return 0;
+}
+
+
+// test that check things but like... not anything important 
 
 int test1NNN(chip8 * c8)
 {
