@@ -164,7 +164,6 @@ void case_8(chip8 * chip8)
     else if(opcodesn == 0x4) OP_8XY4(chip8);
     else if(opcodesn == 0x5) OP_8XY5(chip8);
     else if(opcodesn == 0x6) OP_8XY6(chip8);
-    else if(opcodesn == 0xA) OP_FX0A(chip8);
     else if(opcodesn == 0x7) OP_8XY7(chip8);
     else if(opcodesn == 0xE) OP_8XYE(chip8);
 }
@@ -187,4 +186,5 @@ void case_f(chip8 * chip8)
     else if(opcodesn == 0x15) OP_FX15(chip8);
     else if(opcodesn == 0x55) OP_FX55(chip8);
     else if(opcodesn == 0x65) OP_FX65(chip8);
+    else if(opcodesn == 0x0A) OP_FX0A(chip8);
 }
