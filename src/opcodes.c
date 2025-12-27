@@ -8,9 +8,7 @@
 void OP_00E0(chip8 * c8)
 {
     memset((*c8).display, 0, sizeof((*c8).display));
-    printf("CLS ");
 }
-
 //JP addr
 void OP_1NNN(chip8 * c8)
 {
@@ -61,7 +59,6 @@ void OP_7XNN(chip8 * c8)
 
     // setting the register Vx to a value Vx += byte
     (*c8).registers[Vx] += byte;
-    printf("ADD Vx, byte ");
 }
 
 void OP_3XNN(chip8 * c8)
@@ -220,7 +217,7 @@ void OP_8XY6(chip8 * c8)
     uint8_t Vx = ((*c8).opcode & 0x0F00) >> 8u;
     uint8_t Vy = ((*c8).opcode & 0x00F0) >> 4u;
 
-    if((*c8).emuset == 1)
+    if((*c8).emuset == 0)
     {
         (*c8).registers[Vx] = (*c8).registers[Vy];
     }
@@ -238,7 +235,7 @@ void OP_8XYE(chip8 * c8)
     uint8_t Vx = ((*c8).opcode & 0x0F00) >> 8u;
     uint8_t Vy = ((*c8).opcode & 0x00F0) >> 4u;
 
-    if((*c8).emuset == 1)
+    if((*c8).emuset == 0)
     {
         (*c8).registers[Vx] = (*c8).registers[Vy];
     }
@@ -256,7 +253,6 @@ void OP_ANNN(chip8 * c8)
 {
     //setting index to memoty defined in opcode
     (*c8).index = (*c8).opcode & 0x0FFF;
-    printf("LD I, addr ");
 }
 
 void OP_BNNN(chip8 * c8)
@@ -287,12 +283,14 @@ void OP_DXYN(chip8 * c8)
     (*c8).registers[0xF] = 0;
 
 
-    for (int yline = 0; yline < height; yline++) 
+    // run until reaches the height or bottom of the screen
+    for (int yline = 0; (yline < height) && (yline < (VIDEO_HEIGHT - y)); yline++) 
     {
 
         pixel = (*c8).memory[start + yline];
 
-        for(int xline = 0; xline < 8; xline++) 
+        // run until reaches the width of 8 or edge of the screen
+        for(int xline = 0; (xline < 8) && (xline < VIDEO_WIDTH - x); xline++) 
         {
             if((pixel & (0b10000000 >> xline)) != 0) 
             {
@@ -308,9 +306,6 @@ void OP_DXYN(chip8 * c8)
         }
 
     }
-
-
-    printf("DRW %x, %x, nibble ", x, y);
 }
 
 void OP_EX9E(chip8 * c8) // new
@@ -410,14 +405,14 @@ void OP_FX55(chip8 * c8)
 {
     uint8_t Vx = ((*c8).opcode & 0x0F00u) >> 8u;
 
-    if((*c8).emuset == 0)
+    if((*c8).emuset == 1)
     {
         for(uint8_t i = 0; i <= Vx; i++)
         {
             (*c8).memory[(*c8).index + i] = (*c8).registers[i];
         }
     }
-    else if((*c8).emuset == 1)
+    else if((*c8).emuset == 0)
     {
         uint8_t i = 0;
         while(i <= Vx)
@@ -433,14 +428,14 @@ void OP_FX65(chip8 * c8)
 {
     uint8_t Vx = ((*c8).opcode & 0x0F00u) >> 8u;
 
-    if((*c8).emuset == 0)
+    if((*c8).emuset == 1)
     {
         for(uint8_t i = 0; i <= Vx; i++)
         {
             (*c8).registers[i] = (*c8).memory[(*c8).index + i];
         }
     }
-    else if((*c8).emuset == 1)
+    else if((*c8).emuset == 0)
     {
         uint8_t i = 0;
         while(i <= Vx)

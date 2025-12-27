@@ -1,5 +1,5 @@
 CC=gcc
-CFLAGS= -I . -lSDL2
+CFLAGS= -I . -lSDL2 -std=c99 -Wall -Werror
 DEPS = src/chip-8.h src/platform.h src/opcodes.h src/tests.h
 OBJ = src/main.c src/chip-8.c src/platform.c src/opcodes.c src/tests.c
 

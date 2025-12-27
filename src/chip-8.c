@@ -79,8 +79,6 @@ void loadprog(chip8 * chip8, char * filename)
         exit(1);
     }
 
-    int size = 5000;
-
     // Store the content of the file
     char buffer = 0x00;
     
@@ -115,9 +113,8 @@ void cycle(chip8 * chip8)
     // making the Program counter go to the nex instruction
     (*chip8).PC += 2;
 
-    printf("pc: %x, opcode: %x ", (*chip8).PC, chip8->opcode);
+    //printf("pc: %x, opcode: %x ", (*chip8).PC, chip8->opcode);
     
-    upscr(chip8);
 
     execute(chip8);
 }
@@ -139,7 +136,11 @@ void execute(chip8 * chip8)
     else if(opcodesn == 0xA) OP_ANNN(chip8);
     else if(opcodesn == 0xB) OP_BNNN(chip8);
     else if(opcodesn == 0xC) OP_CXNN(chip8);
-    else if(opcodesn == 0xD) OP_DXYN(chip8);
+    else if(opcodesn == 0xD) 
+    {
+        OP_DXYN(chip8);
+        upscr(chip8);
+    }
     else if(opcodesn == 0xE) case_e(chip8);
     else if(opcodesn == 0xF) case_f(chip8);
     
@@ -149,7 +150,11 @@ void case_0(chip8 * chip8)
 {
     uint16_t opcodesn = ((chip8->opcode) & 0x000F);
 
-    if(opcodesn == 0x0) OP_00E0(chip8);
+    if(opcodesn == 0x0) 
+    {
+        OP_00E0(chip8);
+        upscr(chip8);
+    }
     if(opcodesn == 0xE) OP_00EE(chip8);
 
 }
