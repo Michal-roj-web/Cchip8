@@ -11,7 +11,7 @@ int col = 0;
 void platstart()
 {
     // initialzing the SDL
-    SDL_Init(SDL_INIT_EVERYTHING);
+    SDL_Init(SDL_INIT_VIDEO);
     SDL_CreateWindowAndRenderer(64*10 + 1,32*10 + 1,0,&window,&renderer);
     SDL_SetWindowTitle(window, "Chip8 Emulator");
 }
