@@ -13,9 +13,14 @@
 struct timeval end, start;
 
 // my .h files
-#include "chip-8.h"
-#include "platform.h"
-#include "opcodes.h"
+#include <stdint.h>
+
+// 8CHIP.H
+#include "chip8.h"
+//END OF 8CHIP.H
+
+#include "platform.c"
+#include "opcodes.c"
 
 const uint8_t fontset[FONTSET_SIZE] =
 {
@@ -101,51 +106,6 @@ void loadprog(chip8 * chip8, char * filename)
 
 }
 
-// one procesor cycle
-void cycle(chip8 * chip8)
-{
-    isKey(chip8);
-    // setting the opcode to 0x(PC)(PC+1)
-    chip8->opcode = 
-    ((*chip8).memory[(*chip8).PC] << 8u) | (*chip8).memory[((*chip8).PC) + 1]; 
-
-
-    // making the Program counter go to the nex instruction
-    (*chip8).PC += 2;
-
-    //printf("pc: %x, opcode: %x ", (*chip8).PC, chip8->opcode);
-    
-
-    execute(chip8);
-}
-
-void execute(chip8 * chip8)
-{
-    uint16_t opcodesn = (chip8->opcode) >> 12u;
-
-    if(opcodesn == 0x0) case_0(chip8);
-    else if(opcodesn == 0x1) OP_1NNN(chip8);
-    else if(opcodesn == 0x2) OP_2NNN(chip8);
-    else if(opcodesn == 0x6) OP_6XNN(chip8);
-    else if(opcodesn == 0x7) OP_7XNN(chip8);
-    else if(opcodesn == 0x3) OP_3XNN(chip8);
-    else if(opcodesn == 0x4) OP_4XNN(chip8);
-    else if(opcodesn == 0x5) OP_5XY0(chip8);
-    else if(opcodesn == 0x9) OP_9XY0(chip8);
-    else if(opcodesn == 0x8) case_8(chip8);
-    else if(opcodesn == 0xA) OP_ANNN(chip8);
-    else if(opcodesn == 0xB) OP_BNNN(chip8);
-    else if(opcodesn == 0xC) OP_CXNN(chip8);
-    else if(opcodesn == 0xD) 
-    {
-        OP_DXYN(chip8);
-        upscr(chip8);
-    }
-    else if(opcodesn == 0xE) case_e(chip8);
-    else if(opcodesn == 0xF) case_f(chip8);
-    
-}
-
 void case_0(chip8 * chip8)
 {
     uint16_t opcodesn = ((chip8->opcode) & 0x000F);
@@ -192,4 +152,49 @@ void case_f(chip8 * chip8)
     else if(opcodesn == 0x55) OP_FX55(chip8);
     else if(opcodesn == 0x65) OP_FX65(chip8);
     else if(opcodesn == 0x0A) OP_FX0A(chip8);
+}
+
+void execute(chip8 * chip8)
+{
+    uint16_t opcodesn = (chip8->opcode) >> 12u;
+
+    if(opcodesn == 0x0) case_0(chip8);
+    else if(opcodesn == 0x1) OP_1NNN(chip8);
+    else if(opcodesn == 0x2) OP_2NNN(chip8);
+    else if(opcodesn == 0x6) OP_6XNN(chip8);
+    else if(opcodesn == 0x7) OP_7XNN(chip8);
+    else if(opcodesn == 0x3) OP_3XNN(chip8);
+    else if(opcodesn == 0x4) OP_4XNN(chip8);
+    else if(opcodesn == 0x5) OP_5XY0(chip8);
+    else if(opcodesn == 0x9) OP_9XY0(chip8);
+    else if(opcodesn == 0x8) case_8(chip8);
+    else if(opcodesn == 0xA) OP_ANNN(chip8);
+    else if(opcodesn == 0xB) OP_BNNN(chip8);
+    else if(opcodesn == 0xC) OP_CXNN(chip8);
+    else if(opcodesn == 0xD) 
+    {
+        OP_DXYN(chip8);
+        upscr(chip8);
+    }
+    else if(opcodesn == 0xE) case_e(chip8);
+    else if(opcodesn == 0xF) case_f(chip8);
+    
+}
+
+// one procesor cycle
+void cycle(chip8 * chip8)
+{
+    isKey(chip8);
+    // setting the opcode to 0x(PC)(PC+1)
+    chip8->opcode = 
+    ((*chip8).memory[(*chip8).PC] << 8u) | (*chip8).memory[((*chip8).PC) + 1]; 
+
+
+    // making the Program counter go to the nex instruction
+    (*chip8).PC += 2;
+
+    //printf("pc: %x, opcode: %x ", (*chip8).PC, chip8->opcode);
+    
+
+    execute(chip8);
 }

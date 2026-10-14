@@ -1,8 +1,3 @@
-#ifndef CHIP8_H
-#define CHIP8_H
-
-#include <stdint.h>
-
 // important consts define
 #define FONTSET_SIZE 80
 #define FONTSET_START_ADDRESS 0x50 // where in memory fonts start
@@ -30,19 +25,3 @@ typedef struct
     uint16_t opcode;
     uint8_t emuset;
 }chip8;
-
-// functions
-
-void c8start(chip8 * chip8);
-void cycle(chip8 * chip8);
-void execute(chip8 * chip8);
-void loadprog(chip8 * chip8, char * filename);
-
-// cases
-void case_0(chip8 * chip8);
-void case_8(chip8 * chip8);
-void case_e (chip8 * chip8);
-void case_f(chip8 * chip8);
-
-
-#endif

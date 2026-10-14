@@ -1,7 +1,9 @@
 #include <stdio.h>
 #include <SDL2/SDL.h>
-#include "platform.h"
-#include "chip-8.h"
+
+// PLATFORM.H
+// NOTHING IS NEEDED
+//END OF PLATFORM.H
 
 SDL_Window * window = NULL;
 SDL_Renderer * renderer = NULL;
