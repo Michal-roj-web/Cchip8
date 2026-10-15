@@ -16,7 +16,9 @@ int main(int argc, char *argv[])
 
     tests();
     char * filename;
-    int timed = 1;
+
+    //Default mode is untimed clock
+    int timed = 0;
 
     if(argc < 2)
     {
@@ -27,11 +29,18 @@ int main(int argc, char *argv[])
     {
         filename = argv[1];
     }
+
     if(argc > 2)
     {
         char * proxy = argv[2];
-        if(strcmp(proxy, "--timed")) timed = 0;
-        if(strcmp(proxy, "--untimed")) timed = 1;
+        if(!strcmp(proxy, "--timed"))
+        { 
+            timed = 1;
+        }
+        else if(!strcmp(proxy, "--untimed"))
+        {
+            timed = 0;
+        }
     }
 
 
@@ -74,7 +83,7 @@ int main(int argc, char *argv[])
         long T = 1000/60;
 
         // clock freq
-        long C = 1;
+        long C = 1/10;
 
 
         if(!timed)
